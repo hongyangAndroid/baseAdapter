@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/id_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="Android新技能"
+        android:textColor="#444"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/id_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id_title"
+        android:layout_marginTop="10dp"
+        android:maxLines="2"
+        android:minLines="1"
+        android:text="Android打造万能的ListView和GridView适配器"
+        android:textColor="#898989"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/id_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/id_desc"
+        android:layout_marginTop="10dp"
+        android:text="2014-12-12"
+        android:textColor="#898989"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/id_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/id_desc"
+        android:layout_marginTop="10dp"
+        android:background="#2ED667"
+        android:drawableLeft="@mipmap/icon_photo"
+        android:drawablePadding="5dp"
+        android:padding="3dp"
+        android:text="10086"
+        android:textColor="#fff"
+        android:textSize="12sp" />
+
+</RelativeLayout>
