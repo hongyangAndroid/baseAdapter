@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">sample</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_multi_item_list_view">MultiItemListViewActivity</string>
+    <string name="title_activity_recycler_view">RecyclerViewActivity</string>
+    <string name="title_activity_multi_item_rv">MultiItemRvActivity</string>
+    <string name="title_activity_rv_width_header">RvWidthHeaderActivity</string>
+</resources>
