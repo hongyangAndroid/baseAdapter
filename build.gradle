@@ -23,7 +23,7 @@ ext {
     userOrg = 'hongyangandroid'
     groupId = 'com.zhy'
     artifactId = 'base-adapter'
-    publishVersion = '1.0.0'
+    publishVersion = '2.0.0'
     desc = 'a easy adapter for listview , gridview . '
     website = 'https://github.com/hongyangAndroid/base-adapter'
     licences = ['Apache-2.0']

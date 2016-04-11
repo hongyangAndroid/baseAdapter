@@ -1,38 +1,32 @@
 # base-adapter
-Android 万能的Adapter for ListView,GridView等，支持多种Item类型的情况。
+Android 万能的Adapter for ListView,RecyclerView,GridView等，支持多种Item类型的情况。
 
-[点击查看简单介绍](http://blog.csdn.net/lmj623565791/article/details/38902805)
+[点击查看简单介绍](http://blog.csdn.net/lmj623565791/article/details/51118836)
 
-可以直接导入项目参考，在Android Studio中，使用Import Module进行导入，如下图：
+## 引入
 
-<img src="import_module.png" width="400px"/>
+```
+compile 'com.zhy:base-adapter:2.0.0'
+```
 
-## 单种类型Item
+## 使用
 
-```java
-listView.setAdapter(new CommonAdapter<Bean>(getActivity(), mDatas,
-                R.layout.item_single_listview)
+##（1）简单的数据绑定
+
+首先看我们最常用的单种Item的书写方式：
+
+```
+mRecyclerView.setAdapter(new CommonAdapter<String>(this, R.layout.item_list, mDatas)
 {
-	  @Override
-	  public void convert(final ViewHolder holder, final Bean bean)
-	  {
-	      holder.setText(R.id.id_title, bean.getTitle())
-	              .setText(R.id.id_desc, bean.getDesc())
-	              .setText(R.id.id_time, bean.getTime())
-	              .setText(R.id.id_phone, bean.getPhone());
-
-	      holder.setOnClickListener(R.id.id_title, new View.OnClickListener()
-	      {
-	          @Override
-	          public void onClick(View view)
-	          {
-	              Toast.makeText(getActivity(), bean.getTitle(), Toast.LENGTH_SHORT).show();
-	          }
-	      });
-	  }
-
+    @Override
+    public void convert(ViewHolder holder, String s)
+    {
+        holder.setText(R.id.id_item_list_title, s);
+    }
 });
 ```
+是不是相当方便，在convert方法中完成数据、事件绑定即可。
+
 
 只需要简单的将Adapter继承CommonAdapter，复写convert方法即可。省去了自己编写ViewHolder等大量的重复的代码。
 
@@ -41,84 +35,91 @@ listView.setAdapter(new CommonAdapter<Bean>(getActivity(), mDatas,
 
 效果图：
 
-<img src="single.png" width="320px"/>
+<img src="screenshot/single.png" width="320px"/>
 
+##（2）多种ItemViewType
 
-## 多种类型的Item
+多种ItemViewType，正常考虑下，我们需要根据Item指定ItemType，并且根据ItemType指定相应的布局文件。我们通过`MultiItemTypeSupport `完成指定：
 
-```java
-package com.zhy.quickdev.adapter.sample.adapter;
-
-import android.content.Context;
-
-import com.zhy.quickdev.adapter.MultiItemCommonAdapter;
-import com.zhy.quickdev.adapter.MultiItemTypeSupport;
-import com.zhy.quickdev.adapter.R;
-import com.zhy.quickdev.adapter.ViewHolder;
-import com.zhy.quickdev.adapter.sample.bean.ChatMessage;
-
-import java.util.List;
-
-/**
- * Created by zhy on 15/9/4.
- */
-public class ChatAdapter extends MultiItemCommonAdapter<ChatMessage>
+```
+MultiItemTypeSupport  multiItemSupport = new MultiItemTypeSupport<ChatMessage>()
 {
-    public ChatAdapter(Context context, List<ChatMessage> datas)
+    @Override
+    public int getLayoutId(int itemType)
     {
-        super(context, datas, new MultiItemTypeSupport<ChatMessage>()
-        {
-            @Override
-            public int getLayoutId(int position, ChatMessage msg)
-            {
-                if (msg.isComMeg())
-                {
-                    return R.layout.main_chat_from_msg;
-                }
-                return R.layout.main_chat_send_msg;
-            }
-
-            @Override
-            public int getViewTypeCount()
-            {
-                return 2;
-            }
-            @Override
-            public int getItemViewType(int postion, ChatMessage msg)
-            {
-                if (msg.isComMeg())
-                {
-                    return ChatMessage.RECIEVE_MSG;
-                }
-                return ChatMessage.SEND_MSG;
-            }
-        });
+       //根据itemType返回item布局文件id
     }
 
     @Override
-    public void convert(ViewHolder holder, ChatMessage chatMessage)
+    public int getItemViewType(int postion, ChatMessage msg)
     {
-
-        switch (holder.getLayoutId())
-        {
-            case R.layout.main_chat_from_msg:
-                holder.setText(R.id.chat_from_content, chatMessage.getContent());
-                holder.setText(R.id.chat_from_name, chatMessage.getName());
-                holder.setImageResource(R.id.chat_from_icon, chatMessage.getIcon());
-                break;
-            case R.layout.main_chat_send_msg:
-                holder.setText(R.id.chat_send_content, chatMessage.getContent());
-                holder.setText(R.id.chat_send_name, chatMessage.getName());
-                holder.setImageResource(R.id.chat_send_icon, chatMessage.getIcon());
-                break;
-        }
+       //根据当前的bean返回item type
     }
 }
 
 ```
+剩下就简单了,将其作为参数传入到`MultiItemCommonAdapter `即可。
 
-需要在构造中传入MultiItemTypeSupport对象，然后在convert方法中，根据holder.getLayoutId()，根据不同的layoutId进行相应的控件初始化即可。
+```
+mRecyclerView.setAdapter(new SectionAdapter<String>(this, mDatas, multiItemSupport)
+{
+    @Override
+    public void convert(ViewHolder holder, String s)
+    {
+        holder.setText(R.id.id_item_list_title, s);
+    }
+});
+```
 
-效果图：
 
-<img src="multi.png" width="320px"/>
+贴个效果图：
+
+<img src="screenshot/rvadapter_01.png" width="360px"/>
+
+##(3)添加分类header
+其实属于多种ItemViewType的一种了，只是比较常用，我们就简单封装下。
+
+依赖正常考虑下，这种方式需要额外指定header的布局，以及布局中显示标题的TextView了，以及根据Item显示什么样的标题。我们通过`SectionSupport `对象指定：
+
+```
+SectionSupport<String> sectionSupport = new SectionSupport<String>()
+{
+    @Override
+    public int sectionHeaderLayoutId()
+    {
+        return R.layout.header;
+    }
+
+    @Override
+    public int sectionTitleTextViewId()
+    {
+        return R.id.id_header_title;
+    }
+
+    @Override
+    public String getTitle(String s)
+    {
+        return s.substring(0, 1);
+    }
+};
+```
+3个方法，一个指定header的布局文件，一个指定布局文件中显示title的TextView，最后一个用于指定显示什么样的标题（根据Adapter的Bean）。
+
+接下来就很简单了：
+
+```
+mRecyclerView.setAdapter(new SectionAdapter<String>(this, R.layout.item_list, mDatas, sectionSupport)
+{
+    @Override
+    public void convert(ViewHolder holder, String s)
+    {
+        holder.setText(R.id.id_item_list_title, s);
+    }
+});
+```
+这样就完了，效果图如下：
+
+<img src="screenshot/rvadapter_02.png" width="360px"/>
+
+
+ListView的使用与RecyclerView基本一致，注意ListView对应的类路径为`com.zhy.base.adapter.abslistview`.
