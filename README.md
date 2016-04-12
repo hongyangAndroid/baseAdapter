@@ -123,3 +123,15 @@ mRecyclerView.setAdapter(new SectionAdapter<String>(this, R.layout.item_list, mD
 
 
 ListView的使用与RecyclerView基本一致，注意ListView对应的类路径为`com.zhy.base.adapter.abslistview`.
+
+## 感谢
+
+* [https://github.com/JoanZapata/base-adapter-helper](https://github.com/JoanZapata/base-adapter-helper)
+
+    应该是我所知道的最早的对listview,gridview封装的adapter了，参考了其中很多，比如在`ViewHolder.setXXX`类的辅助方法。
+
+* [https://github.com/ragunathjawahar/simple-section-adapter](https://github.com/ragunathjawahar/simple-section-adapter)
+
+    `SectionAdapter`对其进行了参考。
+
+

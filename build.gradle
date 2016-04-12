@@ -24,8 +24,8 @@ ext {
     groupId = 'com.zhy'
     artifactId = 'base-adapter'
     publishVersion = '2.0.0'
-    desc = 'a easy adapter for listview , gridview . '
-    website = 'https://github.com/hongyangAndroid/base-adapter'
+    desc = 'a easy adapter for listview ,recyclerview, gridview . '
+    website = 'https://github.com/hongyangAndroid/baseAdapter'
     licences = ['Apache-2.0']
 }
 

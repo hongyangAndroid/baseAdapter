@@ -18,6 +18,8 @@ public abstract class MultiItemCommonAdapter<T> extends CommonAdapter<T>
     {
         super(context, -1, datas);
         mMultiItemTypeSupport = multiItemTypeSupport;
+        if (mMultiItemTypeSupport == null)
+            throw new IllegalArgumentException("the mMultiItemTypeSupport can not be null.");
     }
 
     @Override
