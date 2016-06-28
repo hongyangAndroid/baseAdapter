@@ -1,17 +1,25 @@
 # base-adapter
 Android 万能的Adapter for ListView,RecyclerView,GridView等，支持多种Item类型的情况。
 
-[点击查看简单介绍](http://blog.csdn.net/lmj623565791/article/details/51118836)
 
 ## 引入
 
+### ForRecyclerView
+
 ```
-compile 'com.zhy:base-adapter:2.0.0'
+compile 'com.zhy:base-rvadapter:3.0.2'
 ```
+
+### ForListView
+
+```
+compile 'com.zhy:base-adapter:3.0.2'
+```
+
 
 ## 使用
 
-##（1）简单的数据绑定
+##（1）简单的数据绑定(ListView与其使用方式一致)
 
 首先看我们最常用的单种Item的书写方式：
 
@@ -37,98 +45,121 @@ mRecyclerView.setAdapter(new CommonAdapter<String>(this, R.layout.item_list, mDa
 
 <img src="screenshot/single.png" width="320px"/>
 
-##（2）多种ItemViewType
+##（2）多种ItemViewType(ListView与其使用方式一致)
 
-多种ItemViewType，正常考虑下，我们需要根据Item指定ItemType，并且根据ItemType指定相应的布局文件。我们通过`MultiItemTypeSupport `完成指定：
+对于多中itemviewtype的处理参考：https://github.com/sockeqwe/AdapterDelegates ，具有极高的扩展性。
+
 
 ```
-MultiItemTypeSupport  multiItemSupport = new MultiItemTypeSupport<ChatMessage>()
+MultiItemTypeAdapter adapter = new MultiItemTypeAdapter(this,mDatas);
+adapter.addItemViewDelegate(new MsgSendItemDelagate());
+adapter.addItemViewDelegate(new MsgComingItemDelagate());
+```
+
+每种Item类型对应一个ItemViewDelegete，例如：
+
+```
+public class MsgComingItemDelagate implements ItemViewDelegate<ChatMessage>
 {
+
     @Override
-    public int getLayoutId(int itemType)
+    public int getItemViewLayoutId()
     {
-       //根据itemType返回item布局文件id
+        return R.layout.main_chat_from_msg;
     }
 
     @Override
-    public int getItemViewType(int postion, ChatMessage msg)
+    public boolean isForViewType(ChatMessage item, int position)
     {
-       //根据当前的bean返回item type
+        return item.isComMeg();
+    }
+
+    @Override
+    public void convert(ViewHolder holder, ChatMessage chatMessage, int position)
+    {
+        holder.setText(R.id.chat_from_content, chatMessage.getContent());
+        holder.setText(R.id.chat_from_name, chatMessage.getName());
+        holder.setImageResource(R.id.chat_from_icon, chatMessage.getIcon());
     }
 }
-
 ```
-剩下就简单了,将其作为参数传入到`MultiItemCommonAdapter `即可。
-
-```
-mRecyclerView.setAdapter(new SectionAdapter<String>(this, mDatas, multiItemSupport)
-{
-    @Override
-    public void convert(ViewHolder holder, String s)
-    {
-        holder.setText(R.id.id_item_list_title, s);
-    }
-});
-```
-
 
 贴个效果图：
 
 <img src="screenshot/rvadapter_01.png" width="360px"/>
 
-##(3)添加分类header
-其实属于多种ItemViewType的一种了，只是比较常用，我们就简单封装下。
 
-依赖正常考虑下，这种方式需要额外指定header的布局，以及布局中显示标题的TextView了，以及根据Item显示什么样的标题。我们通过`SectionSupport `对象指定：
+
+
+##(3) 添加HeaderView、FooterView
 
 ```
-SectionSupport<String> sectionSupport = new SectionSupport<String>()
+mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
+
+TextView t1 = new TextView(this);
+t1.setText("Header 1");
+TextView t2 = new TextView(this);
+t2.setText("Header 2");
+mHeaderAndFooterWrapper.addHeaderView(t1);
+mHeaderAndFooterWrapper.addHeaderView(t2);
+
+mRecyclerView.setAdapter(mHeaderAndFooterWrapper);
+mHeaderAndFooterWrapper.notifyDataSetChanged();
+```
+
+类似装饰者模式，直接将原本的adapter传入，初始化一个HeaderAndFooterWrapper对象，然后调用相关API添加。
+
+##(4) 添加LoadMore
+
+```
+mLoadMoreWrapper = new LoadMoreWrapper(mOriginAdapter);
+mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
+mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener()
 {
     @Override
-    public int sectionHeaderLayoutId()
+    public void onLoadMoreRequested()
     {
-        return R.layout.header;
-    }
-
-    @Override
-    public int sectionTitleTextViewId()
-    {
-        return R.id.id_header_title;
-    }
-
-    @Override
-    public String getTitle(String s)
-    {
-        return s.substring(0, 1);
-    }
-};
-```
-3个方法，一个指定header的布局文件，一个指定布局文件中显示title的TextView，最后一个用于指定显示什么样的标题（根据Adapter的Bean）。
-
-接下来就很简单了：
-
-```
-mRecyclerView.setAdapter(new SectionAdapter<String>(this, R.layout.item_list, mDatas, sectionSupport)
-{
-    @Override
-    public void convert(ViewHolder holder, String s)
-    {
-        holder.setText(R.id.id_item_list_title, s);
     }
 });
+
+mRecyclerView.setAdapter(mLoadMoreWrapper);
+
 ```
-这样就完了，效果图如下：
+直接将原本的adapter传入，初始化一个LoadMoreWrapper对象，然后调用相关API即可。
 
-<img src="screenshot/rvadapter_02.png" width="360px"/>
+##(5)添加EmptyView
+
+```
+mEmptyWrapper = new EmptyWrapper(mAdapter);
+mEmptyWrapper.setEmptyView(R.layout.empty_view);
+
+mRecyclerView.setAdapter(mEmptyWrapper );
+
+```
+
+直接将原本的adapter传入，初始化一个EmptyWrapper对象，然后调用相关API即可。
 
 
-ListView的使用与RecyclerView基本一致，注意ListView对应的类路径为`com.zhy.base.adapter.abslistview`.
+支持链式添加多种功能，示例代码：
+
+```
+mAdapter = new EmptyViewWrapper(
+	new LoadMoreWrapper(
+	new HeaderAndFooterWrapper(mOriginAdapter)));
+```
+
+
 
 ## 感谢
+
 
 * [https://github.com/JoanZapata/base-adapter-helper](https://github.com/JoanZapata/base-adapter-helper)
 
     应该是我所知道的最早的对listview,gridview封装的adapter了，参考了其中很多，比如在`ViewHolder.setXXX`类的辅助方法。
+
+* [https://github.com/sockeqwe/AdapterDelegates](https://github.com/sockeqwe/AdapterDelegates)
+	
+	参考该库多种ItemType绑定数据方式
 
 * [https://github.com/ragunathjawahar/simple-section-adapter](https://github.com/ragunathjawahar/simple-section-adapter)
 

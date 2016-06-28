@@ -28,10 +28,6 @@
             android:name=".MultiItemRvActivity"
             android:label="@string/title_activity_multi_item_rv" >
         </activity>
-        <activity
-            android:name=".RvWidthHeaderActivity"
-            android:label="@string/title_activity_rv_width_header" >
-        </activity>
     </application>
 
 </manifest>

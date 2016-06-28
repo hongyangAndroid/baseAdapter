@@ -1,1 +1,1 @@
-include ':sample', ':base-adapter-library'
+include ':sample', ':base-adapter-library', ':baseadapter-recyclerview'

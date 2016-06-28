@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.zhy.base.adapter.ViewHolder;
-import com.zhy.base.adapter.abslistview.CommonAdapter;
+import com.zhy.adapter.abslistview.CommonAdapter;
+import com.zhy.adapter.abslistview.ViewHolder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +18,10 @@ public class MainActivity extends AppCompatActivity
 {
     private List<String> mDatas = new ArrayList<>(Arrays.asList("MultiItem ListView",
             "RecyclerView",
-            "MultiItem RecyclerView","RecyclerViewWithHeader"));
+            "MultiItem RecyclerView"));
     private ListView mListView;
+
+    private View mEmptyView ;
 
 
     @Override
@@ -29,14 +31,23 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         mListView = ((ListView) findViewById(R.id.id_listview_list));
+        mEmptyView = findViewById(R.id.id_empty_view);
         mListView.setAdapter(new CommonAdapter<String>(this, R.layout.item_list, mDatas)
         {
             @Override
-            public void convert(ViewHolder holder, String o)
+            public void convert(ViewHolder holder, String o, int pos)
             {
                 holder.setText(R.id.id_item_list_title, o);
             }
         });
+
+        mListView.setEmptyView(mEmptyView);
+//        TextView t1 = new TextView(this);
+//        t1.setText("Header 1");
+//        TextView t2 = new TextView(this);
+//        t2.setText("Header 2");
+//        mListView.addHeaderView(t1);
+//        mListView.addHeaderView(t2);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -54,9 +65,6 @@ public class MainActivity extends AppCompatActivity
                         break;
                     case 2:
                         intent = new Intent(MainActivity.this, MultiItemRvActivity.class);
-                        break;
-                    case 3:
-                        intent = new Intent(MainActivity.this, RvWidthHeaderActivity.class);
                         break;
 
                 }

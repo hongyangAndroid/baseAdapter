@@ -2,8 +2,18 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.zhy.sample.RecyclerViewActivity">
-    <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
+    <item android:id="@+id/action_grid"
+          android:title="GridLayoutManager"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/action_staggered"
+          android:title="StaggeredGridLayoutManager"
+          android:orderInCategory="100"
+          app:showAsAction="never"/>
+
+    <item android:id="@+id/action_linear"
+          android:title="LinearLayoutManager"
           android:orderInCategory="100"
           app:showAsAction="never"/>
 </menu>

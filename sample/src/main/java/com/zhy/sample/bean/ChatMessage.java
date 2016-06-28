@@ -80,7 +80,7 @@ public class ChatMessage
 	public String toString()
 	{
 		return "ChatMessage [icon=" + icon + ", name=" + name + ", content="
-				+ content + ", createDate=" + createDate + "]";
+				+ content + ", createDate=" + createDate +", isComing = "+ isComMeg()+ "]";
 	}
 
 	public static List<ChatMessage> MOCK_DATAS = new ArrayList<>();

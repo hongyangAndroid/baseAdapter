@@ -1,11 +1,11 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
+//apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.zhy.sample"
         minSdkVersion 10
         targetSdkVersion 23
         versionCode 1
@@ -18,13 +18,18 @@ android {
         }
     }
 }
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    testCompile 'junit:junit:4.12'
     compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.zhy:base-adapter:3.0.2'
-    compile 'com.zhy:base-rvadapter:3.0.2'
-//    compile project(':base-adapter-library')
-//    compile project(':baseadapter-recyclerview')
 }
+
+//publish {
+//    userOrg = 'hongyangandroid'
+//    groupId = 'com.zhy'
+//    artifactId = 'base-rvadapter'
+//    publishVersion = '3.0.2'
+//    desc = 'a easy adapter for recyclerview'
+//    website = 'https://github.com/hongyangAndroid/baseAdapter'
+//    licences = ['Apache-2.0']
+//}

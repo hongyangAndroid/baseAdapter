@@ -24,12 +24,13 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.2.0'
 }
 
+
 publish {
-    userOrg = rootProject.userOrg
-    groupId = rootProject.groupId
-    artifactId = rootProject.artifactId
-    publishVersion = rootProject.publishVersion
-    desc = rootProject.description
-    website = rootProject.website
-    licences = rootProject.licences
+    userOrg = 'hongyangandroid'
+    groupId = 'com.zhy'
+    artifactId = 'base-adapter'
+    publishVersion = '3.0.2'
+    desc = 'a easy adapter for listview , gridview . '
+    website = 'https://github.com/hongyangAndroid/baseAdapter'
+    licences = ['Apache-2.0']
 }
