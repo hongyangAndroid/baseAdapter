@@ -39,6 +39,12 @@ public class MainActivity extends AppCompatActivity
             {
                 holder.setText(R.id.id_item_list_title, o);
             }
+
+            @Override
+            public void onViewHolderCreated(ViewHolder holder, View itemView)
+            {
+                super.onViewHolderCreated(holder, itemView);
+            }
         });
 
         mListView.setEmptyView(mEmptyView);

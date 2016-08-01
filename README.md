@@ -7,13 +7,13 @@ Android 万能的Adapter for ListView,RecyclerView,GridView等，支持多种Ite
 ### ForRecyclerView
 
 ```
-compile 'com.zhy:base-rvadapter:3.0.2'
+compile 'com.zhy:base-rvadapter:3.0.3'
 ```
 
 ### ForListView
 
 ```
-compile 'com.zhy:base-adapter:3.0.2'
+compile 'com.zhy:base-adapter:3.0.3'
 ```
 
 
@@ -148,6 +148,28 @@ mAdapter = new EmptyViewWrapper(
 	new HeaderAndFooterWrapper(mOriginAdapter)));
 ```
 
+
+## 一些回调
+
+### onViewHolderCreated
+
+```
+mListView.setAdapter(new CommonAdapter<String>(this, R.layout.item_list, mDatas)
+{
+    @Override
+    public void convert(ViewHolder holder, String o, int pos)
+    {
+        holder.setText(R.id.id_item_list_title, o);
+    }
+
+    @Override
+    public void onViewHolderCreated(ViewHolder holder, View itemView)
+    {
+        super.onViewHolderCreated(holder, itemView);
+       //AutoUtil.autoSize(itemView)
+    }
+});
+```
 
 
 ## 感谢

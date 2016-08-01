@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 23
@@ -25,12 +25,12 @@ dependencies {
 }
 
 
-publish {
-    userOrg = 'hongyangandroid'
-    groupId = 'com.zhy'
-    artifactId = 'base-adapter'
-    publishVersion = '3.0.2'
-    desc = 'a easy adapter for listview , gridview . '
-    website = 'https://github.com/hongyangAndroid/baseAdapter'
-    licences = ['Apache-2.0']
-}
+//publish {
+//    userOrg = 'hongyangandroid'
+//    groupId = 'com.zhy'
+//    artifactId = 'base-adapter'
+//    publishVersion = '3.0.3'
+//    desc = 'a easy adapter for listview , gridview . '
+//    website = 'https://github.com/hongyangAndroid/baseAdapter'
+//    licences = ['Apache-2.0']
+//}
