@@ -1,6 +1,7 @@
 package com.zhy.adapter.abslistview;
 
 import android.content.Context;
+import android.view.View;
 
 import com.zhy.adapter.abslistview.base.ItemViewDelegate;
 
@@ -34,7 +35,6 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T>
             }
         });
     }
-
 
     protected abstract void convert(ViewHolder viewHolder, T item, int position);
 

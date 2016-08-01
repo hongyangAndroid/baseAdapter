@@ -63,18 +63,18 @@ public class MultiItemRvActivity extends AppCompatActivity
             }
         });
 
-        adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener<ChatMessage>()
+        adapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener()
         {
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, ChatMessage o, int position)
+            public void onItemClick(View view, RecyclerView.ViewHolder holder,  int position)
             {
-                Toast.makeText(MultiItemRvActivity.this, "Click:" + position + " => " + o.getContent(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MultiItemRvActivity.this, "Click:" + position , Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, ChatMessage o, int position)
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position)
             {
-                Toast.makeText(MultiItemRvActivity.this, "LongClick:" + position + " => " + o.getContent(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MultiItemRvActivity.this, "LongClick:" + position , Toast.LENGTH_SHORT).show();
                 return false;
             }
         });

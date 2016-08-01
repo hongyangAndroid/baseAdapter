@@ -99,9 +99,14 @@ public class ItemViewDelegateManager<T>
     }
 
 
+    public ItemViewDelegate getItemViewDelegate(int viewType)
+    {
+        return delegates.get(viewType);
+    }
+
     public int getItemViewLayoutId(int viewType)
     {
-        return delegates.get(viewType).getItemViewLayoutId();
+        return getItemViewDelegate(viewType).getItemViewLayoutId();
     }
 
     public int getItemViewType(ItemViewDelegate itemViewDelegate)

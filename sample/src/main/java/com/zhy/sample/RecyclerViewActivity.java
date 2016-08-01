@@ -86,17 +86,17 @@ public class RecyclerViewActivity extends AppCompatActivity
         });
 
         mRecyclerView.setAdapter(mLoadMoreWrapper);
-        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener<String>()
+        mAdapter.setOnItemClickListener(new CommonAdapter.OnItemClickListener()
         {
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, String o, int position)
+            public void onItemClick(View view, RecyclerView.ViewHolder holder,  int position)
             {
                 Toast.makeText(RecyclerViewActivity.this, "pos = " + position, Toast.LENGTH_SHORT).show();
                 mAdapter.notifyItemRemoved(position);
             }
 
             @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, String o, int position)
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position)
             {
                 return false;
             }

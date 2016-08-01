@@ -22,10 +22,10 @@ import android.widget.TextView;
 public class ViewHolder
 {
     private SparseArray<View> mViews;
-    private int mPosition;
+    protected int mPosition;
     private View mConvertView;
     private Context mContext;
-    private int mLayoutId;
+    protected int mLayoutId;
 
     public ViewHolder(Context context, View itemView, ViewGroup parent, int position)
     {
