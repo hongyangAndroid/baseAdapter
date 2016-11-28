@@ -182,6 +182,22 @@ public class ViewHolder
         view.setVisibility(visible ? View.VISIBLE : View.GONE);
         return this;
     }
+    
+    public ViewHolder setVisible(int viewId, int visibility)
+    {
+        View view = getView(viewId);
+        switch (visibility) {
+            case View.VISIBLE:
+            case View.INVISIBLE:
+            case View.GONE:
+                view.setVisibility(visibility);
+                break;
+            default:
+                view.setVisibility(View.GONE);
+                break;
+        }
+        return this;
+    }
 
     public ViewHolder linkify(int viewId)
     {
