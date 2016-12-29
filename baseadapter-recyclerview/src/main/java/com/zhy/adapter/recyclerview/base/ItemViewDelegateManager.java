@@ -21,7 +21,7 @@ public class ItemViewDelegateManager<T>
         if (delegate != null)
         {
             delegates.put(viewType, delegate);
-            viewType++;
+            //viewType++
         }
         return this;
     }
