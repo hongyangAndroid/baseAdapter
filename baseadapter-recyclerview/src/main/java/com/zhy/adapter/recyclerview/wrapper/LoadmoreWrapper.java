@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.adapter.recyclerview.utils.WrapperUtils;
 
+import java.util.List;
+
 
 /**
  * Created by zhy on 16/6/23.
@@ -66,7 +68,10 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {}
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads)
     {
         if (isShowLoadMore(position))
         {
@@ -76,7 +81,7 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
             return;
         }
-        mInnerAdapter.onBindViewHolder(holder, position);
+        mInnerAdapter.onBindViewHolder(holder, position, payloads);
     }
 
     @Override

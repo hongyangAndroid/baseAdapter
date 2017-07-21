@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.adapter.recyclerview.utils.WrapperUtils;
 
+import java.util.List;
+
 
 /**
  * Created by zhy on 16/6/23.
@@ -64,17 +66,17 @@ public class HeaderAndFooterWrapper<T> extends RecyclerView.Adapter<RecyclerView
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {}
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads)
     {
-        if (isHeaderViewPos(position))
+        if (isHeaderViewPos(position) || isFooterViewPos(position))
         {
             return;
         }
-        if (isFooterViewPos(position))
-        {
-            return;
-        }
-        mInnerAdapter.onBindViewHolder(holder, position - getHeadersCount());
+
+        mInnerAdapter.onBindViewHolder(holder, position - getHeadersCount(), payloads);
     }
 
     @Override
@@ -147,6 +149,5 @@ public class HeaderAndFooterWrapper<T> extends RecyclerView.Adapter<RecyclerView
     {
         return mFootViews.size();
     }
-
 
 }
