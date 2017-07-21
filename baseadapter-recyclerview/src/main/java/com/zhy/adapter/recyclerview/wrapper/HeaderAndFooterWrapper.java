@@ -135,9 +135,18 @@ public class HeaderAndFooterWrapper<T> extends RecyclerView.Adapter<RecyclerView
         mHeaderViews.put(mHeaderViews.size() + BASE_ITEM_TYPE_HEADER, view);
     }
 
-    public void addFootView(View view)
+    public void addFooterView(View view)
     {
         mFootViews.put(mFootViews.size() + BASE_ITEM_TYPE_FOOTER, view);
+    }
+
+    /**
+     * @deprecated use {@link #addFooterView(View)} instead.
+     */
+    @Deprecated
+    public void addFootView(View view)
+    {
+        addFooterView(view);
     }
 
     public int getHeadersCount()
