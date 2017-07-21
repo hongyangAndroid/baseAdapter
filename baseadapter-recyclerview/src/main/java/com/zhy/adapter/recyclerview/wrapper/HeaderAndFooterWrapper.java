@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.adapter.recyclerview.utils.WrapperUtils;
 
+import java.util.List;
+
 
 /**
  * Created by zhy on 16/6/23.
@@ -64,17 +66,17 @@ public class HeaderAndFooterWrapper<T> extends RecyclerView.Adapter<RecyclerView
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {}
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads)
     {
-        if (isHeaderViewPos(position))
+        if (isHeaderViewPos(position) || isFooterViewPos(position))
         {
             return;
         }
-        if (isFooterViewPos(position))
-        {
-            return;
-        }
-        mInnerAdapter.onBindViewHolder(holder, position - getHeadersCount());
+
+        mInnerAdapter.onBindViewHolder(holder, position - getHeadersCount(), payloads);
     }
 
     @Override
@@ -133,9 +135,18 @@ public class HeaderAndFooterWrapper<T> extends RecyclerView.Adapter<RecyclerView
         mHeaderViews.put(mHeaderViews.size() + BASE_ITEM_TYPE_HEADER, view);
     }
 
-    public void addFootView(View view)
+    public void addFooterView(View view)
     {
         mFootViews.put(mFootViews.size() + BASE_ITEM_TYPE_FOOTER, view);
+    }
+
+    /**
+     * @deprecated use {@link #addFooterView(View)} instead.
+     */
+    @Deprecated
+    public void addFootView(View view)
+    {
+        addFooterView(view);
     }
 
     public int getHeadersCount()
@@ -148,5 +159,77 @@ public class HeaderAndFooterWrapper<T> extends RecyclerView.Adapter<RecyclerView
         return mFootViews.size();
     }
 
+    @Override
+    public void setHasStableIds(boolean hasStableIds)
+    {
+        super.setHasStableIds(hasStableIds);
+        mInnerAdapter.setHasStableIds(hasStableIds);
+    }
 
+    @Override
+    public long getItemId(int position) {
+        if (isHeaderViewPos(position) || isFooterViewPos(position))
+        {
+            return super.getItemId(position); // NO_ID.
+        }
+
+        return mInnerAdapter.getItemId(position);
+    }
+
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        int position = holder.getAdapterPosition();
+
+        if (isHeaderViewPos(position) || isFooterViewPos(position))
+        {
+            // Nothing.
+        } else
+        {
+            mInnerAdapter.onViewRecycled(holder);
+        }
+    }
+
+    @Override
+    public boolean onFailedToRecycleView(RecyclerView.ViewHolder holder) {
+        int position = holder.getAdapterPosition();
+
+        if (isHeaderViewPos(position) || isFooterViewPos(position))
+        {
+            return false;
+        } else
+        {
+            return mInnerAdapter.onFailedToRecycleView(holder);
+        }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        int position = holder.getAdapterPosition();
+
+        if (isHeaderViewPos(position) || isFooterViewPos(position))
+        {
+            // Nothing.
+        } else
+        {
+            mInnerAdapter.onViewDetachedFromWindow(holder);
+        }
+    }
+
+    @Override
+    public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        super.registerAdapterDataObserver(observer);
+        mInnerAdapter.registerAdapterDataObserver(observer);
+    }
+
+    @Override
+    public void unregisterAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        super.unregisterAdapterDataObserver(observer);
+        mInnerAdapter.unregisterAdapterDataObserver(observer);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        mInnerAdapter.onDetachedFromRecyclerView(recyclerView);
+    }
 }

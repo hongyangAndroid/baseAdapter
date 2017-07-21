@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import com.zhy.adapter.recyclerview.base.ViewHolder;
 import com.zhy.adapter.recyclerview.utils.WrapperUtils;
 
+import java.util.List;
+
 
 /**
  * Created by zhy on 16/6/23.
@@ -94,13 +96,16 @@ public class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {}
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads)
     {
         if (isEmpty())
         {
             return;
         }
-        mInnerAdapter.onBindViewHolder(holder, position);
+        mInnerAdapter.onBindViewHolder(holder, position, payloads);
     }
 
     @Override
@@ -122,4 +127,71 @@ public class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolde
         mEmptyLayoutId = layoutId;
     }
 
+    @Override
+    public void setHasStableIds(boolean hasStableIds)
+    {
+        super.setHasStableIds(hasStableIds);
+        mInnerAdapter.setHasStableIds(hasStableIds);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        if (isEmpty())
+        {
+            return super.getItemId(position); // NO_ID.
+        }
+
+        return mInnerAdapter.getItemId(position);
+    }
+
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        if (isEmpty())
+        {
+            // Nothing.
+        } else
+        {
+            mInnerAdapter.onViewRecycled(holder);
+        }
+    }
+
+    @Override
+    public boolean onFailedToRecycleView(RecyclerView.ViewHolder holder) {
+        if (isEmpty())
+        {
+            return false;
+        } else
+        {
+            return mInnerAdapter.onFailedToRecycleView(holder);
+        }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        if (isEmpty())
+        {
+            // Nothing.
+        } else
+        {
+            mInnerAdapter.onViewDetachedFromWindow(holder);
+        }
+    }
+
+    @Override
+    public void registerAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        super.registerAdapterDataObserver(observer);
+        mInnerAdapter.registerAdapterDataObserver(observer);
+    }
+
+    @Override
+    public void unregisterAdapterDataObserver(RecyclerView.AdapterDataObserver observer) {
+        super.unregisterAdapterDataObserver(observer);
+        mInnerAdapter.unregisterAdapterDataObserver(observer);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        mInnerAdapter.onDetachedFromRecyclerView(recyclerView);
+    }
 }

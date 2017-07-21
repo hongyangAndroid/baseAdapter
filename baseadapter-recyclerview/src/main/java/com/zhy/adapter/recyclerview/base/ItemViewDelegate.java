@@ -1,8 +1,5 @@
 package com.zhy.adapter.recyclerview.base;
 
-
-import android.view.View;
-
 /**
  * Created by zhy on 16/6/22.
  */
