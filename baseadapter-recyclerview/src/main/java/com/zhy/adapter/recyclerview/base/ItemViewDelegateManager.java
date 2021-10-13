@@ -1,6 +1,6 @@
 package com.zhy.adapter.recyclerview.base;
 
-import android.support.v4.util.SparseArrayCompat;
+import androidx.collection.SparseArrayCompat;
 
 
 /**
